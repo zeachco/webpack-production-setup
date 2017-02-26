@@ -10,6 +10,9 @@
   },
   "author": "Olivier Rousseau-Guyot",
   "homepage": "https://zeachco.com",
+  "bin": {
+    "wpps": "./webpack/index.js"
+  },
   "devDependencies": {
     "appcache-webpack-plugin": "^1.3.0",
     "babel-core": "^6.23.1",
@@ -30,7 +33,8 @@
     "webpack": "^2.2.1",
     "webpack-cleanup-plugin": "^0.4.2",
     "webpack-dashboard": "^0.3.0",
-    "webpack-dev-server": "^2.4.1"
+    "webpack-dev-server": "^2.4.1",
+    "webpack-eslint-plugin": "^1.2.0"
   },
   "scripts": {
     "build": "webpack -p --progress --profile --colors --env.isProd",
@@ -41,5 +45,6 @@
   "dependencies": {
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
-  }
+  },
+  "license": "MIT"
 }
