@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const { resolve, join } = require('path');
-const loaders = require('./loaders');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');

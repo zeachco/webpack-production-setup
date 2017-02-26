@@ -1,5 +1,5 @@
 import 'styles';
-import React from 'react'
+import React from 'react';
 
 const App = () => (<div>
 	<h1>Awesome!</h1>

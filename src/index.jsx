@@ -3,13 +3,16 @@ import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from './App';
 
-render(<AppContainer><App /></AppContainer>, document.querySelector("#root"));
+const Hook = Component => render(
+	<AppContainer><Component /></AppContainer>,
+	document.querySelector("#root"));
+
+Hook(App);
 
 if (module && module.hot) {
   module.hot.accept('./App', () => {
     console.clear();
-    const App = require('./App').default;
-    render(<AppContainer><App/></AppContainer>,document.querySelector("#root")
-    );
+		const HotApp = require('./App').default;
+		Hook(HotApp);
   });
 }
