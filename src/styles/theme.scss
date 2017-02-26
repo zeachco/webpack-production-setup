@@ -1,4 +1,4 @@
-$white : #eee;
+$white : #fff;
 $black : #000;
 $red : #d9534f;
 $orange: #f0ad4e;
@@ -8,9 +8,10 @@ $blue : #0275d8;
 $teal : #5bc0de;
 $pink : #ff5b77;
 $purple: #613d7c;
-$brand-primary: $red;
+
+$brand-primary: $teal;
 $enable-rounded: false;
-$enable-shadows: false;
+$enable-shadows: true;
 $enable-gradients: true;
 $enable-transitions: true;
 $enable-grid-classes: true;
