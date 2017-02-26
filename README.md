@@ -10,8 +10,8 @@ npm start # dev server
 npm run build #creates a production ready build
 ```
 
-## Abstract the files from the structure
-From your project, run `npm install wpps` then
+## Or abstract the files from the structure
+From your project, run `npm install -D webpack-production-setup` then
 in your `webpack.config.js` write
 ```javascript
 module.exports = require('wpps/webpack.config.js');
