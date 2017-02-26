@@ -1,0 +1,25 @@
+@keyframes runIn {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.5, 1.5);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+
+body {
+  background: #767;
+  color: white;
+  padding: 5%;
+  text-shadow: 0 0 2px #000;
+  font-weight: 900;
+
+  h1 {
+    position: absolute;
+    animation: runIn .7s ease-in-out;
+  }
+}
