@@ -3,7 +3,7 @@ a webpack 2 build pipeline focused on production performance and simplicity
 
 ## Use this template
 ```bash
-git clone git@github.com:zeachco/webpack-production-setup.git ~/my-project
+git clone git@github.com:zeachco/webpack-production-setup.git ./my-project
 cd my-project
 yarn install # or npm install
 npm start # dev server
