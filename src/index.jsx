@@ -11,7 +11,7 @@ Hook(App);
 
 if (module && module.hot) {
   module.hot.accept('./App', () => {
-    console.clear();
+    console.clear(); // eslint-disable-line no-console
 		const HotApp = require('./App').default;
 		Hook(HotApp);
   });

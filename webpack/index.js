@@ -5,7 +5,7 @@ const DashboardPlugin = require('webpack-dashboard/plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const AppCachePlugin = require('appcache-webpack-plugin');
-const EslintPlugin = require('webpack-eslint-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 const CWD = process.cwd();
 
@@ -29,15 +29,22 @@ module.exports = envArgs => {
 		},
 		module: { loaders: require('./loaders') },
 		plugins: [
-			new webpack.NoEmitOnErrorsPlugin(),
-			new ExtractTextPlugin({ filename: '[name].css', allChunks: true }),
 			new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify(envConfig.isProd ? 'production' : 'development') } }),
+			new ExtractTextPlugin({ filename: '[name].[hash].css', allChunks: true }),
+			new ManifestPlugin(),
+			new AppCachePlugin({ output: Date.now() + 'manifest.appcache' }),
 			new HtmlWebpackPlugin({
 				template: resolve(CWD, 'src', 'index.html'),
-      	inlineManifestWebpackName: 'webpackManifest',
-				files: { css: ['[name]_[hash].css'], js: ["[name]_[hash].js"], }
-			}),
-			new AppCachePlugin({ output: 'manifest.appcache' })
+				minify: {
+					removeComments: true,
+					collapseWhitespace: true,
+					collapseInlineTagWhitespace: true
+				},
+				files: {
+					css: ['[name]_[hash].css'],
+					js: ["[name]_[hash].js"]
+				}
+			})
 		]
 	};
 
@@ -53,20 +60,14 @@ module.exports = envArgs => {
 		}));
 		config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
 		config.module.loaders.push({
-			test: /\.scss$/,
-			loader: ExtractTextPlugin.extract({fallback: 'style-loader', use : 'css-loader?sourceMap&localIdentName=[local]___[hash:base64:5]!sass-loader?outputStyle=expanded'}),
+			test: /\.s(c|a)ss$/,
+			loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader!sass-loader', allChunks: true}),
 			exclude: ['node_modules']
 		});
 	} else {
 		config.entry.unshift('react-hot-loader/patch');
 		config.plugins.push(new webpack.HotModuleReplacementPlugin());
 		config.plugins.push(new DashboardPlugin());
-		config.module.loaders.push({
-			test: /\.less$/,
-			loaders: ['style-loader', 'css-loader?importLoaders=1', 'less-loader'],
-			exclude: ['node_modules']
-		});
-
 		config.module.loaders.push({
 			test: /\.s(c|a)ss$/,
 			loaders: ['style-loader', 'css-loader?importLoaders=1', 'sass-loader'],
