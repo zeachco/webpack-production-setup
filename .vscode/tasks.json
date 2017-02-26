@@ -8,16 +8,12 @@
   "suppressTaskName": true,
   "tasks": [
     {
+      "taskName": "start",
+      "args": ["start"]
+    },
+    {
       "taskName": "install",
       "args": ["install"]
-    },
-    {
-      "taskName": "update",
-      "args": ["update"]
-    },
-    {
-      "taskName": "test",
-      "args": ["run", "test"]
     },
     {
       "taskName": "build",
