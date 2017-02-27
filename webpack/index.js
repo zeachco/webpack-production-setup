@@ -70,7 +70,7 @@ module.exports = envArgs => {
 		config.plugins.push(new DashboardPlugin());
 		config.module.loaders.push({
 			test: /\.s(c|a)ss$/,
-			loaders: ['style-loader', 'css-loader?importLoaders=1', 'sass-loader'],
+			loaders: ['style-loader', 'css-loader?importLoaders=1&sourceMap', 'sass-loader?sourceMap=map'],
 			exclude: ['node_modules']
 		});
 		config.devServer = require('./server')(envConfig);

@@ -14,5 +14,5 @@ if (module && module.hot) {
     console.clear(); // eslint-disable-line no-console
 		const HotApp = require('./App').default;
 		Hook(HotApp);
-  });
+	});
 }
