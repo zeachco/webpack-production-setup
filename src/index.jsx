@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import App from './App';
+import App from './containers/App';
 
 const Hook = Component => render(
 	<AppContainer><Component /></AppContainer>,
@@ -10,9 +10,9 @@ const Hook = Component => render(
 Hook(App);
 
 if (module && module.hot) {
-  module.hot.accept('./App', () => {
+  module.hot.accept('./containers/App', () => {
     console.clear(); // eslint-disable-line no-console
-		const HotApp = require('./App').default;
+		const HotApp = require('./containers/App').default;
 		Hook(HotApp);
 	});
 }

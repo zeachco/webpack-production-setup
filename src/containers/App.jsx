@@ -9,6 +9,7 @@ const App = () => (
 			<li>It supports hot-loading for both CSS and JS transpilations</li>
 			<li>It have working sourcemaps for both babel js and sass files</li>
 			<li>have an appcache that allows offline access to the app</li>
+			<li>It have eslint on build time with webpack</li>
 		</ol>
 		<button className="btn btn-primary">A Button</button>
 		<button className="btn btn-secondary">Another Button</button>
