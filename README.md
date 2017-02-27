@@ -10,7 +10,7 @@ npm start # dev server
 npm run build #creates a production ready build
 ```
 
-## Or abstract the files from the structure
+## Or abstract the files from the structure (still working on it, might not work everwhere)
 From your project, run `npm install -D webpack-production-setup` then
 in your `webpack.config.js` write
 ```javascript
