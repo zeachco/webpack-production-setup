@@ -5,27 +5,21 @@ import App from './containers/App';
 import store from './store';
 import { Provider } from 'react-redux';
 
-const Hook = (newStore, Component) => render(
+const Hook = (Component) => render(
 	<AppContainer>
-		<Provider store={newStore}>
+		<Provider store={store}>
 			<Component />
 		</Provider>
 	</AppContainer>,
 	document.querySelector("#root"));
 
-Hook(store, App);
+Hook(App);
 
 // HRM functionality
 if (module && module.hot) {
   module.hot.accept('./containers/App', () => {
     console.clear(); // eslint-disable-line no-console
 		const HotApp = require('./containers/App').default;
-		Hook(store, HotApp);
-	});
-
-  module.hot.accept('./store', () => {
-    console.clear(); // eslint-disable-line no-console
-		const hotStore = require('./store').default;
-		Hook(hotStore, App);
+		Hook(HotApp);
 	});
 }
