@@ -1,5 +1,6 @@
-import 'styles/theme.scss';
 import React from 'react';
+import 'styles/theme.scss';
+import Counter from 'components/Counter';
 
 const App = () => (
 	<div className="jumbotron">
@@ -11,8 +12,7 @@ const App = () => (
 			<li>have an appcache that allows offline access to the app</li>
 			<li>It have eslint on build time with webpack</li>
 		</ol>
-		<button className="btn btn-primary">A Button</button>
-		<button className="btn btn-secondary">Another Button</button>
+		<Counter />
 	</div>
 );
 

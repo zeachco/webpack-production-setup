@@ -17,7 +17,7 @@ module.exports = envArgs => {
 		output: {
 			publicPath: '/',
 			path: join(CWD, 'public'),
-			filename: '[name]_[hash].js'
+			filename: '[name].[hash].js'
 		},
 		resolve: {
 			extensions: ['.js', '.jsx', '.css', '.scss', '.less'],
