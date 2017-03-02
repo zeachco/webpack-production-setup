@@ -3,7 +3,7 @@ module.exports = [{
 	loader: 'json5-loader'
 }, {
 	test: /\.jsx?$/,
-	exclude: /(node_modules|bower_components|public\/)/,
+	exclude: /(node_modules|bower_components|build\/)/,
 	loaders: ['babel-loader', 'eslint-loader']
 }, {
 	test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,

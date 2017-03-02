@@ -12,11 +12,11 @@ const CWD = process.cwd();
 module.exports = envArgs => {
 	const envConfig = require('./config')(envArgs || {});
 	const config = {
-		entry: ['./src'],
+		entry: ['src/head_main', './src'],
 		devtool: envConfig.isProd ? false : process.env.WEBPACK_DEVTOOL || '#inline-source-map',
 		output: {
 			publicPath: '/',
-			path: join(CWD, 'public'),
+			path: join(CWD, 'build'),
 			filename: '[name].[hash].js'
 		},
 		resolve: {
@@ -43,7 +43,7 @@ module.exports = envArgs => {
 				files: {
 					css: ['[name]_[hash].css'],
 					js: ["[name]_[hash].js"]
-				}
+    		}
 			})
 		]
 	};
@@ -65,7 +65,7 @@ module.exports = envArgs => {
 			exclude: ['node_modules']
 		});
 	} else {
-		config.entry.unshift('react-hot-loader/patch');
+		config.entry.push('react-hot-loader/patch');
 		config.plugins.push(new webpack.HotModuleReplacementPlugin());
 		config.plugins.push(new DashboardPlugin());
 		config.module.loaders.push({
@@ -75,6 +75,5 @@ module.exports = envArgs => {
 		});
 		config.devServer = require('./server')(envConfig);
 	}
-	console.info(config);
 	return config;
 };
