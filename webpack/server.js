@@ -3,21 +3,21 @@ const PORT = process.env.PORT || "3000";
 
 module.exports = envConfig => ({
 	contentBase: "./build",
-	hot: true, // enable HMR
-	inline: true, // embed the webpack-dev-server runtime into the bundle
-	historyApiFallback: true, // serve index.html in place of 404 responses to allow HTML5 history
+	hot: true,
+	inline: true,
+	historyApiFallback: true,
 	port: PORT,
 	host: HOST,
 	proxy: {
-		// "/cdn/*": {
-		// 	target: {
-		// 		host: "127.0.0.1",
-		// 		protocol: 'https',
-		// 		port: 443
-		// 	},
-		// 	changeOrigin: false,
-		// 	secure: true
-		// }
+		"/api/*": {
+			target: {
+				host: "127.0.0.1",
+				protocol: 'http',
+				port: 8080
+			},
+			changeOrigin: true,
+			secure: false
+		}
 	},
 	stats: {
 		assets: true,
@@ -29,6 +29,7 @@ module.exports = envConfig => ({
 		timings: true,
 		version: true,
 		warnings: true,
+		progress: true,
 		colors: {
 			green: '\u001b[32m'
 		}
