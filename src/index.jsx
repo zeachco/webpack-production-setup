@@ -2,13 +2,14 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import './containers/App';
-import './store';
+
+let App = require('./containers/App');
+let store = require('./store');
 
 const Hook = () => {
 	console.clear(); /* eslint no-console: "off" */
-	const App = require('./containers/App').default;
-	const store = require('./store').default;
+	App = require('./containers/App').default;
+	store = require('./store').default;
 	render(
 	<AppContainer>
 		<Provider store={store}>
