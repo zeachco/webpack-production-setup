@@ -2,8 +2,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
+import './containers/App';
+import './store';
 
 const Hook = () => {
+	console.clear(); /* eslint no-console: "off" */
 	const App = require('./containers/App').default;
 	const store = require('./store').default;
 	render(

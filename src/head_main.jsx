@@ -1,2 +1,6 @@
-
-console.log('this script will be run before the page is ready in a blocking way');
+window.test = 'test';
+try {
+	document.body.style.cssText = 'background: #222;';
+} catch (e) {
+	console.trace(e); /* eslint no-console: off */
+}

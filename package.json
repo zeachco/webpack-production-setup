@@ -44,8 +44,8 @@
   },
   "scripts": {
     "build": "webpack -p --progress --profile --colors --env.isProd",
-    "start": "webpack-dev-server --progress --profile --colors",
-    "dashboard": "webpack-dashboard -- webpack-dev-server --progress --profile --colors",
+    "start": "webpack-dev-server --profile",
+    "dashboard": "webpack-dashboard -- webpack-dev-server",
     "lint": "eslint --ext js --ext jsx src || exit 0"
   },
   "dependencies": {

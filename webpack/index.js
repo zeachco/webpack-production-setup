@@ -12,7 +12,7 @@ const CWD = process.cwd();
 module.exports = envArgs => {
 	const envConfig = require('./config')(envArgs || {});
 	const config = {
-		entry: ['src/head_main', './src'],
+		entry: ['./src'],
 		devtool: envConfig.isProd ? false : process.env.WEBPACK_DEVTOOL || '#inline-source-map',
 		output: {
 			publicPath: '/',
@@ -65,7 +65,7 @@ module.exports = envArgs => {
 			exclude: ['node_modules']
 		});
 	} else {
-		config.entry.push('react-hot-loader/patch');
+		config.entry.unshift('react-hot-loader/patch');
 		config.plugins.push(new webpack.HotModuleReplacementPlugin());
 		config.plugins.push(new DashboardPlugin());
 		config.module.loaders.push({
