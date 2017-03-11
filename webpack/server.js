@@ -1,17 +1,14 @@
-const HOST = process.env.HOST || "127.0.0.1";
-const PORT = process.env.PORT || "3000";
-
 module.exports = envConfig => ({
 	contentBase: "./build",
 	hot: true,
 	inline: true,
 	historyApiFallback: true,
-	port: PORT,
-	host: HOST,
+	port: envConfig.port,
+	host: envConfig.host,
 	proxy: {
 		"/api/*": {
 			target: {
-				host: "127.0.0.1",
+				host: envConfig.host,
 				protocol: 'http',
 				port: 8080
 			},

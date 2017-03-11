@@ -1,19 +1,24 @@
 const webpack = require('webpack');
-const { resolve, join } = require('path');
+const {
+	resolve,
+	join
+} = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const DashboardPlugin = require('webpack-dashboard/plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const AppCachePlugin = require('appcache-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const BabiliPlugin = require("babili-webpack-plugin");
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 const CWD = process.cwd();
 
 module.exports = envArgs => {
 	const envConfig = require('./config')(envArgs || {});
+	console.log(`isProd = ${envConfig.isProd}`);
 	const config = {
-		entry: ['./src'],
-		devtool: envConfig.isProd ? false : process.env.WEBPACK_DEVTOOL || '#inline-source-map',
+		entry: envConfig.entry,
+		devtool: envConfig.isProd ? false : envConfig.devtool,
 		output: {
 			publicPath: '/',
 			path: join(CWD, 'build'),
@@ -27,52 +32,46 @@ module.exports = envArgs => {
 				resolve(CWD, 'src')
 			]
 		},
-		module: { loaders: require('./loaders') },
+		module: {
+			loaders: require('./loaders')(envConfig)
+		},
 		plugins: [
-			new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify(envConfig.isProd ? 'production' : 'development') } }),
-			new ExtractTextPlugin({ filename: '[name].[hash].css', allChunks: true }),
-			new ManifestPlugin(),
-			new AppCachePlugin({ output: Date.now() + 'manifest.appcache' }),
+			new webpack.DefinePlugin({
+				'process.env.NODE_ENV': JSON.stringify(envConfig.isProd ? 'production' : 'development')
+			}),
 			new HtmlWebpackPlugin({
 				template: resolve(CWD, 'src', 'index.html'),
 				minify: {
-					removeComments: true,
-					collapseWhitespace: true,
-					collapseInlineTagWhitespace: true
-				},
-				files: {
-					css: ['[name]_[hash].css'],
-					js: ["[name]_[hash].js"]
-    		}
+					removeComments: envConfig.isProd,
+					collapseWhitespace: envConfig.isProd,
+					collapseInlineTagWhitespace: envConfig.isProd
+				}
+			}),
+			new FaviconsWebpackPlugin('favicon.png'),
+			new ExtractTextPlugin({
+				filename: '[name].[hash].css',
+				allChunks: true
+			}),
+			new ManifestPlugin(),
+			new AppCachePlugin({
+				output: Date.now() + 'manifest.appcache'
 			})
 		]
 	};
 
-	if(envConfig.isProd) {
+	if (envConfig.isProd) {
 		config.plugins.push(new WebpackCleanupPlugin());
-		config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-			compress: {
-				warnings: false,
-				screw_ie8: true,
-				drop_console: true,
-				drop_debugger: true
-			}
-		}));
+		config.plugins.push(new BabiliPlugin());
 		config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
-		config.module.loaders.push({
-			test: /\.s(c|a)ss$/,
-			loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader!sass-loader', allChunks: true}),
-			exclude: ['node_modules']
-		});
 	} else {
-		config.entry.unshift('react-hot-loader/patch');
-		config.plugins.push(new webpack.HotModuleReplacementPlugin());
-		config.plugins.push(new DashboardPlugin());
-		config.module.loaders.push({
-			test: /\.s(c|a)ss$/,
-			loaders: ['style-loader', 'css-loader?importLoaders=1&sourceMap', 'sass-loader?sourceMap=map'],
-			exclude: ['node_modules']
-		});
+		if (envConfig.hot) { // add patch to all entries
+			for (var key in config.entry) {
+				if (config.entry.hasOwnProperty(key)) {
+					config.entry[key] = ['react-hot-loader/patch', config.entry[key]];
+				}
+			}
+		}
+		config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
 		config.devServer = require('./server')(envConfig);
 	}
 	return config;
