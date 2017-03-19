@@ -5,17 +5,7 @@ module.exports = envConfig => ({
 	historyApiFallback: true,
 	port: envConfig.port,
 	host: envConfig.host,
-	proxy: {
-		"/api/*": {
-			target: {
-				host: envConfig.host,
-				protocol: 'http',
-				port: 8080
-			},
-			changeOrigin: true,
-			secure: false
-		}
-	},
+	proxy: envConfig.proxy,
 	stats: {
 		assets: true,
 		children: false,
