@@ -1,8 +1,11 @@
+const path = require('path');
+
 const Defaults = {
+	srcPath: path.join(process.cwd(), 'src'),
 	entry: {
 		main: './src/index.jsx'
 	},
-	devtool: '#cheap-inline-source-map',
+	devtool: 'cheap-module-eval-source-map',
 	eslint: true,
 	isProd: false,
 	host: '127.0.0.1',

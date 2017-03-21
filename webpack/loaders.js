@@ -41,7 +41,7 @@ module.exports = envConfig => {
 
 	const javascriptLoader = {
 		test: /\.jsx?$/,
-		exclude: /(node_modules|bower_components|\.min\.js)/,
+		exclude: /(bower_components|\.min\.js)/,
 		loaders: ['babel-loader']
 	};
 
@@ -55,14 +55,12 @@ module.exports = envConfig => {
 			loader: ExtractTextPlugin.extract({
 				fallback: 'style-loader',
 				use: 'css-loader?sourceMap&localIdentName=[local]___[hash:base64:5]!sass-loader?outputStyle=expanded'
-			}),
-			exclude: ['node_modules']
+			})
 		});
 	} else {
 		loaders.push({
 			test: /\.s(c|a)ss$/,
-			loaders: ['style-loader', 'css-loader?importLoaders=1', 'sass-loader'],
-			exclude: ['node_modules']
+			loaders: ['style-loader', 'css-loader?importLoaders=1', 'sass-loader']
 		});
 	}
 	return loaders;

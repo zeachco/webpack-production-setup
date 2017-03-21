@@ -1,2 +1,4 @@
-console.log(process.version);
-module.exports = require('./webpack');
+const wps = require('./webpack');
+module.exports = wps({
+    /* ... options */
+});

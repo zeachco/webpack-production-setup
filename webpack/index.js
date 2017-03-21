@@ -1,8 +1,5 @@
 const webpack = require('webpack');
-const {
-	resolve,
-	join
-} = require('path');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
@@ -14,22 +11,22 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const CWD = process.cwd();
 
 module.exports = envArgs => {
+	console.log(`node ${process.version}`);
 	const envConfig = require('./config')(envArgs || {});
-	console.log(`isProd = ${envConfig.isProd}`);
 	const config = {
 		entry: envConfig.entry,
 		devtool: envConfig.isProd ? false : envConfig.devtool,
 		output: {
 			publicPath: '/',
-			path: join(CWD, 'build'),
+			path: path.join(CWD, 'build'),
 			filename: '[name].[hash].js'
 		},
 		resolve: {
 			extensions: ['.js', '.jsx', '.css', '.scss', '.less'],
 			modules: [
-				resolve(CWD),
-				resolve(CWD, 'node_modules'),
-				resolve(CWD, 'src')
+				path.join(CWD),
+				path.join(CWD, 'node_modules'),
+				path.join(envConfig.srcPath)
 			]
 		},
 		module: {
@@ -40,7 +37,7 @@ module.exports = envArgs => {
 				'process.env.NODE_ENV': JSON.stringify(envConfig.isProd ? 'production' : 'development')
 			}),
 			new HtmlWebpackPlugin({
-				template: resolve(CWD, 'src', 'index.html'),
+				template: path.resolve(CWD, 'src', 'index.html'),
 				minify: {
 					removeComments: envConfig.isProd,
 					collapseWhitespace: envConfig.isProd,
