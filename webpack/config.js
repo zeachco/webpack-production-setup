@@ -3,7 +3,7 @@ const path = require('path');
 const Defaults = {
 	srcPath: path.join(process.cwd(), 'src'),
 	entry: {
-		main: './src/index.jsx'
+		main: './src'
 	},
 	devtool: 'cheap-module-eval-source-map',
 	eslint: true,

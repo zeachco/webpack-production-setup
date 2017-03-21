@@ -11,7 +11,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const CWD = process.cwd();
 
 module.exports = envArgs => {
-	console.log(`node ${process.version}`);
+	console.log(`node ${process.version}`); // eslint-disable-line
 	const envConfig = require('./config')(envArgs || {});
 	const config = {
 		entry: envConfig.entry,
@@ -44,7 +44,6 @@ module.exports = envArgs => {
 					collapseInlineTagWhitespace: envConfig.isProd
 				}
 			}),
-			new FaviconsWebpackPlugin('favicon.png'),
 			new ExtractTextPlugin({
 				filename: '[name].[hash].css',
 				allChunks: true
@@ -55,6 +54,10 @@ module.exports = envArgs => {
 			})
 		]
 	};
+
+	if (envConfig.favicon) {
+		config.plugins.push(new FaviconsWebpackPlugin(path.join(process.cwd(), envConfig.favicon)));
+	}
 
 	if (envConfig.isProd) {
 		config.plugins.push(new WebpackCleanupPlugin());
@@ -71,5 +74,6 @@ module.exports = envArgs => {
 		config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
 		config.devServer = require('./server')(envConfig);
 	}
+	console.log(config);
 	return config;
 };
