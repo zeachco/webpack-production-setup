@@ -7,6 +7,7 @@ const Defaults = {
 	},
 	devtool: 'cheap-module-eval-source-map',
 	eslint: true,
+	gzip: true,
 	isProd: false,
 	host: '127.0.0.1',
 	port: 3000

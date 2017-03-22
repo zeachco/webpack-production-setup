@@ -6,7 +6,9 @@ const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const AppCachePlugin = require('appcache-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const BabiliPlugin = require("babili-webpack-plugin");
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const CleanPlugin = require('clean-webpack-plugin');
 
 const CWD = process.cwd();
 
@@ -33,6 +35,7 @@ module.exports = envArgs => {
 			loaders: require('./loaders')(envConfig)
 		},
 		plugins: [
+			new CleanPlugin(),
 			new webpack.DefinePlugin({
 				'process.env.NODE_ENV': JSON.stringify(envConfig.isProd ? 'production' : 'development')
 			}),
@@ -42,6 +45,20 @@ module.exports = envArgs => {
 					removeComments: envConfig.isProd,
 					collapseWhitespace: envConfig.isProd,
 					collapseInlineTagWhitespace: envConfig.isProd
+				},
+				"files": {
+					"css": ["main.css"],
+					"js": ["assets/head_bundle.js", "assets/main_bundle.js"],
+					"chunks": {
+						"head": {
+							"entry": "assets/head_bundle.js",
+							"css": ["main.css"]
+						},
+						"main": {
+							"entry": "assets/main_bundle.js",
+							"css": []
+						}
+					}
 				}
 			}),
 			new ExtractTextPlugin({
@@ -57,6 +74,16 @@ module.exports = envArgs => {
 
 	if (envConfig.favicon) {
 		config.plugins.push(new FaviconsWebpackPlugin(path.join(process.cwd(), envConfig.favicon)));
+	}
+
+	if (envConfig.gzip) {
+		config.plugins.push(new CompressionPlugin({
+			asset: "[path].gz[query]",
+			algorithm: "gzip",
+			test: /\.(css|js|html)$/,
+			threshold: 10240,
+			minRatio: 0.8
+		}));
 	}
 
 	if (envConfig.isProd) {
