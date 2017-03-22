@@ -45,7 +45,17 @@ module.exports = envConfig => {
 		loaders: ['babel-loader']
 	};
 
-	if (envConfig.eslint) javascriptLoader.loaders.push('eslint-loader');
+	if (envConfig.eslint) {
+		const fs = require('fs');
+		const path = require('path');
+		const eslintFile = '.eslintrc.yml';
+		const projectEslintPath = path.join(process.cwd(), eslintFile);
+		const localEslintPath = path.join(__dirname, '..', eslintFile);
+		if(!fs.existsSync(projectEslintPath)) {
+			fs.writeFileSync(projectEslintPath, fs.readFileSync(localEslintPath));
+		}
+		javascriptLoader.loaders.push('eslint-loader');
+	}
 
 	loaders.unshift(javascriptLoader);
 
@@ -54,13 +64,22 @@ module.exports = envConfig => {
 			test: /\.scss$/,
 			loader: ExtractTextPlugin.extract({
 				fallback: 'style-loader',
-				use: 'css-loader?sourceMap&localIdentName=[local]___[hash:base64:5]!sass-loader?outputStyle=expanded'
+				use: 'css-loader?sourceMap&localIdentName=[local]___[hash:base64:5]!sass-loader?sourceMap&outputStyle=expanded'
+			})
+		}, {
+			test: /\.css$/,
+			loader: ExtractTextPlugin.extract({
+				fallback: 'style-loader',
+				use: 'css-loader?sourceMap&localIdentName=[local]___[hash:base64:5]'
 			})
 		});
 	} else {
 		loaders.push({
 			test: /\.s(c|a)ss$/,
-			loaders: ['style-loader', 'css-loader?importLoaders=1', 'sass-loader']
+			loaders: ['style-loader?sourceMap', 'css-loader?sourceMap&importLoaders=1', 'sass-loader?sourceMap']
+		}, {
+			test: /\.css$/,
+			loaders: ['style-loader?sourceMap', 'css-loader?sourceMap&importLoaders=1']
 		});
 	}
 	return loaders;

@@ -74,6 +74,5 @@ module.exports = envArgs => {
 		config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
 		config.devServer = require('./server')(envConfig);
 	}
-	console.log(config);
 	return config;
 };
