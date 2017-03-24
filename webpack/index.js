@@ -40,7 +40,7 @@ module.exports = envArgs => {
 				'process.env.NODE_ENV': JSON.stringify(envConfig.isProd ? 'production' : 'development')
 			}),
 			new HtmlWebpackPlugin({
-				template: path.resolve(CWD, 'src', 'index.html'),
+				template: envConfig.htmlTemplate || path.resolve(CWD, 'src', 'index.html'),
 				minify: {
 					removeComments: envConfig.isProd,
 					collapseWhitespace: envConfig.isProd,

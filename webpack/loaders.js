@@ -1,8 +1,7 @@
 module.exports = envConfig => {
 	const ExtractTextPlugin = require('extract-text-webpack-plugin');
 	const naming = 'name=assets/[path][name]_[hash].[ext]';
-	const inlineImageFileSize = 'limit=10000'; // size in bytes ; for 1x1 pixels images and such
-
+	const inlineImageFileSize = 'limit=' + envConfig.inlineImageFileSize;
 	const loaders = [{
 		test: /\.html?$/,
 		loader: "html-loader"
@@ -41,7 +40,7 @@ module.exports = envConfig => {
 
 	const javascriptLoader = {
 		test: /\.jsx?$/,
-		exclude: /(bower_components|\.min\.js)/,
+		exclude: /(bower_components|node_modules|\.min\.js)/,
 		loaders: ['babel-loader']
 	};
 
