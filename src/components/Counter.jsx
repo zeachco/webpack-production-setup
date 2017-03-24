@@ -1,11 +1,14 @@
 import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { actions } from '../store';
+// import { Price } from 'cms-core/src/components/Price';
 
 const Counter = ({count, increase, decrease}) => (
 	<div className="btn-group" role="group" aria-label="Basic example">
 		<button className="btn btn-secondary" disabled={ count < 1 } onClick={decrease}>Substract</button>
-		<button className="btn" disabled>{count}</button>
+		<button className="btn" disabled>{count}
+		{/*<Price value={count / 5} />*/}
+		</button>
 		<button className="btn btn-primary" disabled={ count > 14 }onClick={increase}>Increment</button>
 	</div>
 );

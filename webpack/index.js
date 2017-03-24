@@ -5,10 +5,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const AppCachePlugin = require('appcache-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
-const BabiliPlugin = require("babili-webpack-plugin");
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const CleanPlugin = require('clean-webpack-plugin');
 
 const CWD = process.cwd();
 
@@ -35,7 +33,7 @@ module.exports = envArgs => {
 			loaders: require('./loaders')(envConfig)
 		},
 		plugins: [
-			new CleanPlugin(),
+			new WebpackCleanupPlugin(),
 			new webpack.DefinePlugin({
 				'process.env.NODE_ENV': JSON.stringify(envConfig.isProd ? 'production' : 'development')
 			}),
@@ -88,7 +86,7 @@ module.exports = envArgs => {
 
 	if (envConfig.isProd) {
 		config.plugins.push(new WebpackCleanupPlugin());
-		config.plugins.push(new BabiliPlugin());
+		config.plugins.push(new webpack.optimize.UglifyJsPlugin());
 		config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
 	} else {
 		if (envConfig.hot) { // add patch to all entries
