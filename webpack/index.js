@@ -7,12 +7,26 @@ const AppCachePlugin = require('appcache-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const fs = require('fs');
 
 const CWD = process.cwd();
 
 module.exports = envArgs => {
 	console.log(`node ${process.version}`); // eslint-disable-line
 	const envConfig = require('./config')(envArgs || {});
+
+    if (envConfig.copyConfig) {
+        [
+			'.eslintrc.yml',
+			'.babelrc'
+		].forEach(file => {
+			const projectPath = path.join(process.cwd(), file);
+			const localPath = path.join(__dirname, file);
+			fs.writeFileSync(projectPath, fs.readFileSync(localPath));
+			console.log(`${projectPath} --> ${localPath}`); // eslint-disable-line no-console
+		});
+    }
+
 	const config = {
 		entry: envConfig.entry,
 		devtool: envConfig.isProd ? false : envConfig.devtool,
@@ -43,21 +57,21 @@ module.exports = envArgs => {
 					removeComments: envConfig.isProd,
 					collapseWhitespace: envConfig.isProd,
 					collapseInlineTagWhitespace: envConfig.isProd
-				},
-				"files": {
-					"css": ["main.css"],
-					"js": ["assets/head_bundle.js", "assets/main_bundle.js"],
-					"chunks": {
-						"head": {
-							"entry": "assets/head_bundle.js",
-							"css": ["main.css"]
-						},
-						"main": {
-							"entry": "assets/main_bundle.js",
-							"css": []
-						}
-					}
 				}
+				// "files": {
+				// 	"css": ["main.css"],
+				// 	"js": ["assets/head_bundle.js", "assets/main_bundle.js"],
+				// 	"chunks": {
+				// 		"head": {
+				// 			"entry": "assets/head_bundle.js",
+				// 			"css": ["main.css"]
+				// 		},
+				// 		"main": {
+				// 			"entry": "assets/main_bundle.js",
+				// 			"css": ["main.css"]
+				// 		}
+				// 	}
+				// }
 			}),
 			new ExtractTextPlugin({
 				filename: '[name].[hash].css',

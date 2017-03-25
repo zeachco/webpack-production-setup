@@ -2,7 +2,7 @@ import { createStore } from 'redux';
 import * as allActions from './actions';
 
 function todos(state, action) {
-	const newState = Object.assign({}, state);
+	const newState = {...state};
   switch (action.type) {
 		case 'COUNTER_INCREASE':
 			newState.count++;

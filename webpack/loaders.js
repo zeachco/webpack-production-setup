@@ -40,7 +40,7 @@ module.exports = envConfig => {
 
     const javascriptLoader = {
         test: /\.jsx?$/,
-        include: [/src|node_modules\/src(?!.*\.min\.js)/],
+        include: [/src|client/, ...envConfig.es6Modules],
         loaders: ['babel-loader']
     };
 
@@ -59,14 +59,12 @@ module.exports = envConfig => {
     if (envConfig.isProd) {
         loaders.push({
             test: /\.scss$/,
-            exclude: /(bower_components|node_modules)/,
             loader: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
                 use: 'css-loader?sourceMap&localIdentName=[local]___[hash:base64:5]!sass-loader?sourceMap&outputStyle=expanded'
             })
         }, {
             test: /\.css$/,
-            exclude: /(bower_components|node_modules)/,
             loader: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
                 use: 'css-loader?sourceMap&localIdentName=[local]___[hash:base64:5]'
@@ -75,11 +73,9 @@ module.exports = envConfig => {
     } else {
         loaders.push({
             test: /\.s(c|a)ss$/,
-            exclude: /(bower_components|node_modules)/,
             loaders: ['style-loader?sourceMap', 'css-loader?sourceMap&importLoaders=1', 'sass-loader?sourceMap']
         }, {
             test: /\.css$/,
-            exclude: /(bower_components|node_modules)/,
             loaders: ['style-loader?sourceMap', 'css-loader?sourceMap&importLoaders=1']
         });
     }
