@@ -1,7 +1,7 @@
 {
   "name": "webpack-production-setup",
   "description": "cnd prod setup webpack bundler es6 babel sass",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "main": "webpack/index.js",
   "private": false,
   "engines": {
