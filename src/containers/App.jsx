@@ -24,6 +24,10 @@ const Container = ({children, location}) => {
 	);
 };
 
+Container.propTypes = {
+	location: React.PropTypes.object.isRequired
+};
+
 class Profile extends React.Component {
 	constructor(props) {
 		super(props);
