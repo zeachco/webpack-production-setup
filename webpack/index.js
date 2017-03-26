@@ -18,7 +18,7 @@ module.exports = envArgs => {
     if (envConfig.copyConfig) {
         [
 			'.eslintrc.template.yml',
-			'.babelrc.template.json'
+			'.babelrc.template'
 		].forEach(file => {
 			const localPath = path.join(__dirname, file);
 			const projectPath = path.join(process.cwd(), file.replace('.template', ''));
