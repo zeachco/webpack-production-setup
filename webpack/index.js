@@ -88,20 +88,19 @@ module.exports = envArgs => {
 		config.plugins.push(new FaviconsWebpackPlugin(path.join(process.cwd(), envConfig.favicon)));
 	}
 
-	if (envConfig.gzip) {
-		config.plugins.push(new CompressionPlugin({
-			asset: "[path].gz[query]",
-			algorithm: "gzip",
-			test: /\.(css|js|html)$/,
-			threshold: 10240,
-			minRatio: 0.8
-		}));
-	}
-
 	if (envConfig.isProd) {
-		config.plugins.push(new WebpackCleanupPlugin());
+		config.plugins.unshift(new WebpackCleanupPlugin());
 		config.plugins.push(new webpack.optimize.UglifyJsPlugin());
 		config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
+		if (envConfig.gzip) {
+			config.plugins.push(new CompressionPlugin({
+				asset: "[path].gz[query]",
+				algorithm: "gzip",
+				test: /\.(css|js|html)$/,
+				threshold: 10240,
+				minRatio: 0.8
+			}));
+		}
 	} else {
 		if (envConfig.hot) { // add patch to all entries
 			for (var key in config.entry) {
