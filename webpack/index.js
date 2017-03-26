@@ -35,6 +35,7 @@ module.exports = envArgs => {
 			path: path.join(CWD, 'build'),
 			filename: '[name].[hash].js'
 		},
+		target: 'web',
 		resolve: {
 			extensions: ['.js', '.jsx', '.css', '.scss', '.less'],
 			modules: [
