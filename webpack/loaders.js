@@ -41,7 +41,7 @@ module.exports = envConfig => {
     const javascriptLoader = {
         test: /\.jsx?$/,
         include: [/src|client/, ...envConfig.es6Modules],
-        loaders: ['react-hot-loader/webpack', 'babel-loader']
+        loaders: ['babel-loader']
     };
 
     if (envConfig.eslint) {
@@ -54,6 +54,7 @@ module.exports = envConfig => {
         javascriptLoader.loaders.push('eslint-loader');
     }
 
+    if(!envConfig.isProd) javascriptLoader.loaders.unshift('react-hot-loader/webpack');
     loaders.unshift(javascriptLoader);
 
     if (envConfig.isProd) {
