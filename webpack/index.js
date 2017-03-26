@@ -17,11 +17,11 @@ module.exports = envArgs => {
 
     if (envConfig.copyConfig) {
         [
-			'.eslintrc.yml',
-			'.babelrc'
+			'.eslintrc.template.yml',
+			'.babelrc.template.json'
 		].forEach(file => {
-			const projectPath = path.join(process.cwd(), file);
 			const localPath = path.join(__dirname, file);
+			const projectPath = path.join(process.cwd(), file.replace('.template', ''));
 			fs.writeFileSync(projectPath, fs.readFileSync(localPath));
 			console.log(`${projectPath} --> ${localPath}`); // eslint-disable-line no-console
 		});
