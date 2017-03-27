@@ -1,4 +1,6 @@
 # webpack-production-setup
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/zeachco/webpack-production-setup.svg)](https://greenkeeper.io/)
 a webpack 2 build pipeline focused on production performance and simplicity
 
 ## Use this template
