@@ -8,11 +8,13 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const fs = require('fs');
+const chalk = require('chalk');
 
 const CWD = process.cwd();
+const pkg = require('../package.json');
 
 module.exports = envArgs => {
-	console.log(`node ${process.version}`); // eslint-disable-line
+	console.log(chalk.green(`Webpack Production Setup v${pkg.version} (node ${process.version})`)); // eslint-disable-line
 	const envConfig = require('./config')(envArgs || {});
 
     if (envConfig.copyConfig) {
