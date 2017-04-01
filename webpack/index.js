@@ -93,7 +93,7 @@ module.exports = envArgs => {
 
 	if (envConfig.isProd) {
 		config.plugins.unshift(new WebpackCleanupPlugin());
-		config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+		if(!envConfig.noUgly) config.plugins.push(new webpack.optimize.UglifyJsPlugin());
 		config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
 		if (envConfig.gzip) {
 			config.plugins.push(new CompressionPlugin({
