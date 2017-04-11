@@ -11,17 +11,16 @@ const Hook = () => {
 	App = require('./containers/App').default;
 	store = require('./store').default;
 	render(
-	<AppContainer>
-		<Provider store={store}>
-			<App />
-		</Provider>
-	</AppContainer>,
-	document.querySelector("#root"));}
+		<AppContainer>
+			<Provider store={store}>
+				<App />
+			</Provider>
+		</AppContainer>,
+		document.getElementById('root')
+	);
+}
 
 Hook();
 
 // HRM functionality
-if (module && module.hot) {
-  module.hot.accept('./containers/App', Hook);
-  module.hot.accept('./store', Hook);
-}
+if (module && module.hot) module.hot.accept('./containers/App', Hook);

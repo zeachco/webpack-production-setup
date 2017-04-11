@@ -1,23 +1,16 @@
 import { createStore } from 'redux';
 import * as allActions from './actions';
 
-function todos(state, action) {
-	const newState = {...state};
-  switch (action.type) {
-		case 'COUNTER_INCREASE':
-			newState.count++;
-			return newState;
-		case 'COUNTER_DECREASE':
-			newState.count--;
-			return newState;
-    default:
-      return state
-  }
-}
+import reducers from './reducers';
 
-let store = createStore(todos, {
-	count: 10
-});
+let store = createStore(reducers);
+
+if (module && module.hot) {
+  module.hot.accept('./reducers', () => {
+		const patch = require('./reducers').default;
+		store.replaceReducer(patch);
+	});
+}
 
 export const actions = allActions;
 export default store;
