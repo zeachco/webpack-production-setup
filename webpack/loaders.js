@@ -1,84 +1,127 @@
+const chalk = require('chalk');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 module.exports = envConfig => {
-    const ExtractTextPlugin = require('extract-text-webpack-plugin');
-    const naming = 'name=assets/[path][name]_[hash].[ext]';
+    const naming = 'name=[path][name]_[hash].[ext]';
     const inlineImageFileSize = 'limit=' + envConfig.inlineImageFileSize;
+
     const loaders = [{
         test: /\.html?$/,
         loader: "html-loader"
     }, {
         test: /\.json5?$/,
-        loader: "json5-loader"
+        loader: 'json5-loader'
     }, {
         test: /\.(eot|otf)(\?v=\d+\.\d+\.\d+)?$/,
-        include: /(src|cms-core|auto-bind)/,
+        exclude: /node_modules/,
         loader: `file-loader?${naming}`
     }, {
         test: /\.(woff|woff2)$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: `url-loader?${naming}&limit=5000`
     }, {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: 'url-loader?' + [naming, inlineImageFileSize, 'mimetype=application/octet-stream'].join('&')
     }, {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: 'url-loader?' + [naming, inlineImageFileSize, 'mimetype=image/svg+xml'].join('&')
     }, {
         test: /\.gif/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: 'url-loader?' + [naming, inlineImageFileSize, 'mimetype=image/gif'].join('&')
     }, {
         test: /\.jpg/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: 'url-loader?' + [naming, inlineImageFileSize, 'mimetype=image/jpg'].join('&')
     }, {
         test: /\.png/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: 'url-loader?' + [naming, inlineImageFileSize, 'mimetype=image/png'].join('&')
-    }];
+    },
+    ...envConfig.additionnalLoaders
+    ];
 
     const javascriptLoader = {
         test: /\.jsx?$/,
-        include: [/src|client/, ...envConfig.es6Modules],
+        include: [/src/, ...envConfig.es6Modules],
         loaders: ['babel-loader']
     };
 
     if (envConfig.eslint) {
-        const fs = require('fs');
-        const path = require('path');
-        const eslintFile = '.eslintrc.yml';
-        const projectEslintPath = path.join(process.cwd(), eslintFile);
-        const localEslintPath = path.join(__dirname, '..', eslintFile);
-        if(!fs.existsSync(projectEslintPath)) fs.writeFileSync(projectEslintPath, fs.readFileSync(localEslintPath));
-        javascriptLoader.loaders.push('eslint-loader');
+        javascriptLoader.loaders.push({
+            loader: 'eslint-loader',
+            options: {
+                failOnError: false,// TODO: envConfig.isProd,
+                failOnWarning: false,
+                emitWarning: true,// TODO: !envConfig.isProd
+            }
+        });
+    } else {
+        console.warn(chalk.red('eslint is disabled')); // eslint-disable-line no-console
     }
 
-    if(!envConfig.isProd) javascriptLoader.loaders.unshift('react-hot-loader/webpack');
     loaders.unshift(javascriptLoader);
 
+    const styleLoader = {
+        loader: 'style-loader',
+        options: {
+            sourceMap: true
+        }
+    };
+    const cssLoader = {
+        loader: 'css-loader',
+        options: {
+            importLoaders: '1'
+        }
+    };
+    const postCssLoader = {
+        loader: 'postcss-loader',
+        options: {
+            sourceMap: true,
+            browsers: [
+                'last 2 version',
+                'Safari >= 6.1',
+                'Explorer >= 11'
+            ]
+        }
+    };
+    const sassLoader = {
+        loader: 'sass-loader',
+        options: {
+            sourceMap: true,
+            outputStyle: 'expanded'
+        }
+    };
     if (envConfig.isProd) {
         loaders.push({
-            test: /\.scss$/,
+            test: /\.s(a|c)ss$/,
             loader: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
-                use: 'css-loader?sourceMap&localIdentName=[local]___[hash:base64:5]!sass-loader?sourceMap&outputStyle=expanded'
-            })
-        }, {
+                use: envConfig.prefixer ? [cssLoader, postCssLoader, sassLoader] : [cssLoader, sassLoader]
+            }),
+            exclude: ['node_modules']
+        });
+        loaders.push({
             test: /\.css$/,
             loader: ExtractTextPlugin.extract({
                 fallback: 'style-loader',
-                use: 'css-loader?sourceMap&localIdentName=[local]___[hash:base64:5]'
-            })
+                use: envConfig.prefixer ? [cssLoader, postCssLoader] : [cssLoader]
+            }),
+            exclude: ['node_modules']
         });
     } else {
         loaders.push({
-            test: /\.s(c|a)ss$/,
-            loaders: ['style-loader?sourceMap', 'css-loader?sourceMap&importLoaders=1', 'sass-loader?sourceMap']
-        }, {
+            test: /\.s(a|c)ss$/,
+            use: envConfig.prefixer ? [styleLoader, cssLoader, postCssLoader, sassLoader] : [styleLoader, cssLoader, sassLoader],
+            exclude: ['node_modules']
+        });
+        loaders.push({
             test: /\.css$/,
-            loaders: ['style-loader?sourceMap', 'css-loader?sourceMap&importLoaders=1']
+            use: envConfig.prefixer ? [styleLoader, cssLoader, postCssLoader] : [styleLoader, cssLoader],
+            exclude: ['node_modules']
         });
     }
     return loaders;
-}
+};
