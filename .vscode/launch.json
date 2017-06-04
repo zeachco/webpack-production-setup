@@ -7,7 +7,7 @@
     "type": "node",
     "request": "launch",
     "name": "Launch Program",
-    "cwd": "${workspaceRoot}",
+    "cwd": "${workspaceRoot}/example",
     "console": "integratedTerminal",
     "runtimeArgs": [
       "${workspaceRoot}/node_modules/webpack-dev-server/bin/webpack-dev-server.js",

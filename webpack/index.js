@@ -26,7 +26,7 @@ module.exports = envArgs => {
         },
         devtool: envConfig.isProd ? false : envConfig.devtool,
         output: {
-            publicPath: '',
+            publicPath: '/',
             path: path.join(process.cwd(), 'build'),
             filename: '[name].js'
         },
