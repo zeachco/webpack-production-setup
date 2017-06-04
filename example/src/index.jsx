@@ -7,10 +7,10 @@ let App = require('./containers/App');
 let store = require('./store');
 
 const Hook = () => {
-	console.clear(); /* eslint no-console: "off" */
-	App = require('./containers/App').default;
-	store = require('./store').default;
-	render(
+    console.clear(); /* eslint no-console: "off" */
+    App = require('./containers/App').default;
+    store = require('./store').default;
+    render(
 		<AppContainer>
 			<Provider store={store}>
 				<App />
@@ -18,7 +18,7 @@ const Hook = () => {
 		</AppContainer>,
 		document.getElementById('root')
 	);
-}
+};
 
 Hook();
 

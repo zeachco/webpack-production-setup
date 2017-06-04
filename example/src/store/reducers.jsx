@@ -12,6 +12,6 @@ export default (state = defaultState, action) => {
             newState.count--;
             return newState;
         default:
-            return state
+            return state;
     }
 };

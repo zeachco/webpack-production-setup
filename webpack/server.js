@@ -1,5 +1,5 @@
 module.exports = envConfig => ({
-	contentBase: "./build",
+	contentBase: './',
 	hot: true,
 	inline: true,
 	historyApiFallback: true,
