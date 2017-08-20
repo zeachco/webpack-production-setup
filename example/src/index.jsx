@@ -9,7 +9,7 @@ let store = require('./store');
 const Hook = () => {
     console.clear(); /* eslint no-console: "off" */
     App = require('./containers/App').default;
-    store = require('./store').default;
+    window.store = store = require('./store').default;
     render(
 		<AppContainer>
 			<Provider store={store}>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { PropTypes } from 'prop-types';
 import 'styles/theme.scss';
 import Counter from 'components/Counter';
@@ -8,8 +8,11 @@ import {
   Switch,
   Link
 } from 'react-router-dom';
-import axios from 'axios';
 import cx from 'classnames';
+
+import Profile, {PureComponent} from '../components/Profile';
+import {loadProfile} from '../store/actions';
+loadProfile('/api/anyapi');
 
 const Container = ({pathname, children}) => {
     const activeLink = path => cx({
@@ -35,47 +38,10 @@ Container.propTypes = {
     pathname: PropTypes.object
 };
 
-class Profile extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: true
-        };
-    }
-    componentDidMount() {
-        setTimeout(this.setState.bind(this), 0, {loading: true});
-        axios.get('/api/wtf').then(xhr => {
-            this.setState({
-                info: xhr.data,
-                loading: false
-            });
-        }).catch(xhr => {
-            setTimeout(() => {
-                this.setState({
-                    info: xhr,
-                    loading: false
-                });
-            }, 1000);
-        });
-    }
-    render() {
-        const {
-            loading,
-            info
-        } = this.state;
-
-        return (
-            <div className="jumbotron">
-                {loading ? (<div className="alert alert-warning">Loading...</div>) : null}
-                <pre>{JSON.stringify(info, null, 2)}</pre>
-            </div>
-        );
-    }
-}
-
 const Home = () => (
     <div className="jumbotron">
         <h1>Awesome!</h1>
+        <PureComponent name={'Olivier'} />
         <ol>
             <li>This project comes with a modifiable version of <a href="https://v4-alpha.getbootstrap.com/">Bootstrap 4</a> css framework</li>
             <li>It supports hot-loading for both CSS and JS transpilations</li>
@@ -99,6 +65,9 @@ const NotFound = ({location}) => (
     <div className="jumbotron">
         <h1>Oops 404..</h1>
         <p>Page <i>{location.pathname}</i> could not be found!</p>
+        <Profile />
+        <CounterPage />
+        <Home />
     </div>
 );
 
